@@ -1,0 +1,5 @@
+[logstash01]
+10.0.3.81
+
+[logstash:children]
+logstash01
