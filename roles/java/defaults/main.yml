@@ -1,7 +1,0 @@
----
-
-# Java package to install
-java_package: [ "default-jdk" ]
-
-# Java home path
-java_home: "/usr/lib/jvm/java-8-openjdk-amd64"
