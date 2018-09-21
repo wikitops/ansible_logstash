@@ -1,0 +1,12 @@
+---
+
+dependencies:
+
+  - role: logstash/baremetal
+    when: logstash_on_baremetal
+
+  - role: logstash/docker
+    when: logstash_on_docker
+
+  - role: logstash/kubernetes
+    when: logstash_on_kubernetes

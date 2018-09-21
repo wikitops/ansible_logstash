@@ -1,0 +1,45 @@
+---
+
+- name: LOGSTASH ON DOCKER | Create directories
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - "{{ logstash_path_config }}"
+    - "{{ logstash_path_pipeline }}"
+
+- name: LOGSTASH ON DOCKER | Configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - opt/logstash/config/logstash.yml
+    - opt/logstash/config/jvm.options
+    - opt/logstash/config/startup.options
+  notify: Restart logstash
+
+- name: LOGSTASH ON DOCKER | Create the network
+  docker_network:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items: "{{ logstash_docker_network }}"
+
+- name: LOGSTASH ON DOCKER | Deploy the container
+  docker_container:
+    name: "{{ item.name }}"
+    image: "{{ item.image }}"
+    state: "{{ item.state }}"
+    restart: yes
+    ports: "{{ item.ports }}"
+    networks:
+      - name: "{{ item.network }}"
+    volumes:
+      - "{{ logstash_path_pipeline }}:/usr/share/logstash/pipeline/"
+      - "{{ logstash_path_config }}:/usr/share/logstash/config/"
+  with_items: "{{ logstash_docker }}"

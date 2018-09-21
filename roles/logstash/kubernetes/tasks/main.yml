@@ -1,0 +1,33 @@
+---
+
+- name: LOGSTASH ON KUBERNETES | Create namespace
+  k8s:
+    name: "{{ item.name }}"
+    api_version: v1
+    kind: Namespace
+    state: "{{ item.state }}"
+  with_items: "{{ logstash_namespace }}"
+
+- name: LOGSTASH ON KUBERNETES | Manage Config Maps to configure pipelines
+  k8s:
+    state: present
+    src: "{{ lookup('template', 'configmap-pipeline.yaml') | from_yaml }}"
+  with_items: "{{ logstash_configmap_pipeline }}"
+
+- name: LOGSTASH ON KUBERNETES | Manage Config Maps to configure Logstash
+  k8s:
+    state: present
+    src: "{{ lookup('template', 'configmap-config.yaml') | from_yaml }}"
+  with_items: "{{ logstash_configmap_config }}"
+
+- name: LOGSTASH ON KUBERNETES | Manage Deployments
+  k8s:
+    state: present
+    src: "{{ lookup('template', 'deployment.yaml') | from_yaml }}"
+  with_items: "{{ logstash_deployment }}"
+
+- name: LOGSTASH ON KUBERNETES | Manage Services
+  k8s:
+    state: present
+    src: "{{ lookup('template', 'service.yaml') | from_yaml }}"
+  with_items: "{{ logstash_deployment }}"

@@ -1,0 +1,45 @@
+---
+
+- name: LOGSTASH | Manage Debian environment
+  import_tasks: debian.yml
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+
+- name: LOGSTASH | Manage Redhat environment
+  import_tasks: redhat.yml
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'CentOS'
+
+- name: LOGSTASH | Install required packages
+  package:
+     name: "logstash"
+     update_cache: yes
+     state: present
+  notify: Restart logstash
+
+- name: LOGSTASH | Create directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - "{{ logstash_path_config }}"
+    - "{{ logstash_path_queue }}"
+    - "{{ logstash_path_logs }}"
+
+- name: LOGSTASH | Configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - etc/logstash/logstash.yml
+    - etc/logstash/jvm.options
+    - etc/logstash/startup.options
+  notify: Restart logstash
+
+- name: LOGSTASH | Manage plugins
+  import_tasks: plugins.yml
+  when: logstash_plugin is defined and logstash_plugin != ""

@@ -1,0 +1,50 @@
+---
+
+###
+# KUBERNETES
+###
+
+# Namespace
+logstash_namespace:
+  - logstash
+
+# Deployment
+logstash_deployment:
+  - image: docker.elastic.co/logstash/logstash-oss:{{ logstash_version }}
+    name: logstash
+    namespace: logstash
+    port: 5044
+    replicas: 1
+    resources:
+      limits:
+        memory: 2Gi
+        cpu: "200m"
+      requests:
+        memory: 2Gi
+        cpu: "200m"
+
+logstash_configmap_config:
+  - # Node Identity
+    name: logstash-config
+    namespace: logstash
+
+    # Pipeline Configuration Settings
+    logstash_path_config: "/usr/share/logstash/pipeline"
+    logstash_reload_automatic: true
+    logstash_queue_type: memory # or persisted
+    # logstash_path_queue: "/usr/share/logstash/queue"  # only if queue type is  persisted
+    # logstash_queue_page_capacity: 256mb               # only if queue type is  persisted
+    # logstash_queue_max_events: 0                      # only if queue type is  persisted
+    # logstash_queue_max_bytes: 1024mb                  # only if queue type is  persisted
+    # logstash_queue_checkpoint_acks: 1024              # only if queue type is  persisted
+    # logstash_queue_checkpoint_writes: 1024            # only if queue type is  persisted
+    # logstash_queue_checkpoint_interval: 1000          # only if queue type is  persisted
+
+    # Metrics Settings
+    logstash_http_host: "0.0.0.0"
+    logstash_http_port: "9600-9700"
+
+logstash_configmap_pipeline:
+  - name: logstash-pipeline
+    namespace: logstash
+    pipeline_file_content: "{{ lookup('file', 'pipeline/pipeline.conf') | from_yaml }}"

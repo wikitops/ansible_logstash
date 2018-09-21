@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ item.name }}"
+  namespace: "{{ item.namespace }}"
+spec:
+  replicas: "{{ item.replicas }}"
+  selector:
+    matchLabels:
+      app: "{{ item.name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ item.name }}"
+    spec:
+      containers:
+      - image: "{{ item.image }}"
+        name: "{{ item.name }}"
+        ports: "{{ item.ports }}"
+        resources: "{{ item.resources }}"
+        volumeMounts:
+        - name: config
+          mountPath: /usr/share/logstash/config/logstash.yml
+          subPath: logstash.yml
+          readOnly: true
+        - name: pipeline
+          mountPath: /usr/share/logstash/pipeline
+          readOnly: true
+
+      volumes:
+      - name: pipeline
+        configMap:
+          name: "{{ item.name }}-pipeline"
+          items:
+          - key: pipeline.conf
+            path: pipeline.conf
+      - name: config
+        configMap:
+          name: "{{ item.name }}-config"
+          items:
+          - key: logstash.yml
+            path: logstash.yml

@@ -1,0 +1,11 @@
+---
+
+- name: LOGSTASH ON DEBIAN | Import apt key
+  apt_key:
+    url: "{{ logstash_apt_key }}"
+    state: present
+
+- name: LOGSTASH ON DEBIAN  | Add repository
+  apt_repository:
+    repo: "{{ logstash_apt_url }}"
+    state: present

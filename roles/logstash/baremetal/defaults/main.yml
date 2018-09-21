@@ -1,0 +1,64 @@
+---
+
+###
+# JVM
+###
+
+logstash_jvm_xms: 1g
+logstash_jvm_xmx: 1g
+
+###
+# LOGSTASH
+###
+
+# Version
+logstash_major_version: "6.x"
+logstash_version: "6.4.1"
+
+# Apt repository
+logstash_apt_key: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+logstash_apt_url: "deb https://artifacts.elastic.co/packages/{{ logstash_major_version }}/apt stable main"
+
+# Yum repository
+logstash_yum_key: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+logstash_yum_url: "https://artifacts.elastic.co/packages/6.x/yum"
+
+# Users
+logstash_user: logstash
+logstash_group: logstash
+
+# Pipeline Settings
+logstash_pipeline_workers: 2
+logstash_pipeline_output_workers: 1
+
+logstash_config_reload_interval: 3
+logstash_config_debug: "false"
+
+# Pipeline Configuration Settings
+logstash_path_pipeline: "/opt/logstash/pipeline"
+logstash_reload_automatic: true
+logstash_queue_type: memory # or persisted
+logstash_path_queue: "/opt/logstash/queue"
+logstash_queue_page_capacity: 256mb
+logstash_queue_max_events: 0
+logstash_queue_max_bytes: 1024mb
+logstash_queue_checkpoint_acks: 1024
+logstash_queue_checkpoint_writes: 1024
+logstash_queue_checkpoint_interval: 1000
+
+# Metrics Settings
+logstash_http_host: "0.0.0.0"
+logstash_http_port: "9600-9700"
+
+# Debugging Settings
+logstash_path_logs: "/var/log/logstash"
+
+# External plugins
+logstash_plugin_bin: /usr/share/logstash/bin/logstash-plugin
+logstash_plugin:
+  - name: logstash-input-beats
+    state: present
+  - name: logstash-input-syslog
+    state: present
+  - name: logstash-filter-multiline
+    state: present

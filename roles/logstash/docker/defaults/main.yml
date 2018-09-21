@@ -1,0 +1,60 @@
+---
+
+###
+# JVM
+###
+
+logstash_jvm_xms: 1g
+logstash_jvm_xmx: 1g
+
+###
+# LOGSTASH
+###
+
+# Version
+logstash_version: 6.4.1
+
+# Users
+logstash_user: logstash
+logstash_group: logstash
+
+# Configuration
+logstash_path_config: /opt/logstash/config
+
+# Data path
+logstash_path_data: /usr/share/logstash
+
+# Pipeline Configuration Settings
+logstash_path_pipeline: "/opt/logstash/pipeline"
+logstash_reload_automatic: true
+logstash_queue_type: memory # or persisted
+logstash_path_queue: "/opt/logstash/queue"
+logstash_queue_page_capacity: 256mb
+logstash_queue_max_events: 0
+logstash_queue_max_bytes: 1024mb
+logstash_queue_checkpoint_acks: 1024
+logstash_queue_checkpoint_writes: 1024
+logstash_queue_checkpoint_interval: 1000
+
+# Metrics Settings
+logstash_http_host: "0.0.0.0"
+logstash_http_port: "9600-9700"
+
+###
+# DOCKER
+###
+
+# Network
+logstash_docker_network:
+  - name: logstash
+    state: present
+
+# Stack
+logstash_docker:
+  - name: logstash
+    image: docker.elastic.co/logstash/logstash-oss:{{ logstash_version }}
+    state: started
+    ls_java_opts: "-Xmx{{ logstash_jvm_xms}} -Xms{{ logstash_jvm_xms }}"
+    network: logstash
+    ports:
+      - 9600:9600/tcp

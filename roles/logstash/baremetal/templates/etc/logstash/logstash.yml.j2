@@ -36,11 +36,11 @@ path.data: /var/lib/logstash
 #
 # This defaults to the number of the host's CPU cores.
 #
-# pipeline.workers: 2
+pipeline.workers: {{ logstash_pipeline_workers }}
 #
 # How many workers should be used per output plugin instance
 #
-# pipeline.output.workers: 1
+pipeline.output.workers: {{ logstash_pipeline_output_workers }}
 #
 # How many events to retrieve from inputs before sending to filters+workers
 #
@@ -63,7 +63,7 @@ path.data: /var/lib/logstash
 #
 # Where to fetch the pipeline configuration for the main pipeline
 #
-path.config: {{ logstash_conf_dir }}
+path.config: {{ logstash_path_pipeline }}
 #
 # Pipeline configuration string for the main pipeline
 #
@@ -80,34 +80,46 @@ config.reload.automatic: {{ logstash_reload_automatic }}
 #
 # How often to check if the pipeline configuration has changed (in seconds)
 #
-# config.reload.interval: 3
+config.reload.interval: {{ logstash_config_reload_interval }}
 #
 # Show fully compiled configuration as debug log message
 # NOTE: --log.level must be 'debug'
 #
-# config.debug: false
+config.debug: {{ logstash_config_debug }}
 #
 # ------------ Queuing Settings --------------
 #
 # Internal queuing model, "memory" for legacy in-memory based queuing and
 # "persisted" for disk-based acked queueing. Defaults is memory
 #
-# queue.type: memory
+queue.type: {{ logstash_queue_type }}
 #
 # If using queue.type: persisted, the directory path where the data files will be stored.
 # Default is path.data/queue
 #
+{% if logstash_queue_type == 'persisted' %}
+path.queue: {{ logstash_path_queue }}
+{% else %}
 # path.queue:
+{% endif%}
 #
 # If using queue.type: persisted, the page data files size. The queue data consists of
 # append-only data files separated into pages. Default is 250mb
 #
+{% if logstash_queue_type == 'persisted' %}
+queue.page_capacity: {{ logstash_queue_page_capacity }}
+{% else %}
 # queue.page_capacity: 250mb
+{% endif%}
 #
 # If using queue.type: persisted, the maximum number of unread events in the queue.
 # Default is 0 (unlimited)
 #
+{% if logstash_queue_type == 'persisted' %}
+queue.max_events:{{ logstash_queue_max_events }}
+{% else %}
 # queue.max_events: 0
+{% endif%}
 #
 # If using queue.type: persisted, the total capacity of the queue in number of bytes.
 # If you would like more unacked events to be buffered in Logstash, you can increase the
@@ -116,33 +128,49 @@ config.reload.automatic: {{ logstash_reload_automatic }}
 # whichever criteria is reached first
 # Default is 1024mb or 1gb
 #
+{% if logstash_queue_type == 'persisted' %}
+queue.max_bytes: {{ logstash_queue_max_bytes }}
+{% else %}
 # queue.max_bytes: 1024mb
+{% endif%}
 #
 # If using queue.type: persisted, the maximum number of acked events before forcing a checkpoint
 # Default is 1024, 0 for unlimited
 #
+{% if logstash_queue_type == 'persisted' %}
+queue.checkpoint.acks: {{ logstash_queue_checkpoint_acks }}
+{% else %}
 # queue.checkpoint.acks: 1024
+{% endif%}
 #
 # If using queue.type: persisted, the maximum number of written events before forcing a checkpoint
 # Default is 1024, 0 for unlimited
 #
+{% if logstash_queue_type == 'persisted' %}
+queue.checkpoint.writes: {{ logstash_queue_checkpoint_writes }}
+{% else %}
 # queue.checkpoint.writes: 1024
+{% endif%}
 #
 # If using queue.type: persisted, the interval in milliseconds when a checkpoint is forced on the head page
 # Default is 1000, 0 for no periodic checkpoint.
 #
+{% if logstash_queue_type == 'persisted' %}
+queue.checkpoint.interval: {{ logstash_queue_checkpoint_interval }}
+{% else %}
 # queue.checkpoint.interval: 1000
+{% endif%}
 #
 # ------------ Metrics Settings --------------
 #
 # Bind address for the metrics REST endpoint
 #
-# http.host: "127.0.0.1"
+http.host: "{{ logstash_http_host }}"
 #
 # Bind port for the metrics REST endpoint, this option also accept a range
 # (9600-9700) and logstash will pick up the first available ports.
 #
-# http.port: 9600-9700
+http.port: {{ logstash_http_port }}
 #
 # ------------ Debugging Settings --------------
 #
@@ -155,7 +183,7 @@ config.reload.automatic: {{ logstash_reload_automatic }}
 #   * trace
 #
 # log.level: info
-path.logs: {{ logstash_log_dir }}
+path.logs: {{ logstash_path_logs }}
 #
 # ------------ Other Settings --------------
 #

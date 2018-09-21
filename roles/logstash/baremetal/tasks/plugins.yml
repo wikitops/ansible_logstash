@@ -1,0 +1,8 @@
+---
+
+- name: LOGSTASH PLUGINS | Installation
+  logstash_plugin:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items: "{{ logstash_plugin }}"
+  notify: Restart logstash
