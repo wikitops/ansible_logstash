@@ -1,5 +1,2 @@
-[logstash01]
+[logstash]
 10.0.3.81
-
-[logstash:children]
-logstash01
