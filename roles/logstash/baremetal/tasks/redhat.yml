@@ -2,7 +2,7 @@
 
 - name: LOGSTASH ON REDHAT | Import apt key
   rpm_key:
-    key: http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+    key: "{{ logstash_yum_key }}"
     state: present
 
 - name : LOGSTASH ON REDHAT | Add repository with GPG Key
