@@ -1,4 +1,4 @@
 ---
 
 dependencies:
-  # - { role: docker, docker_users: ["vagrant"] }
+  - { role: docker, docker_users: ["vagrant"] }
