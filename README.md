@@ -17,7 +17,7 @@ What things you need to run this Ansible playbook :
 ```bash
 $ vagrant box add https://app.vagrantup.com/ubuntu/boxes/xenial64
 ```
-*   If yu want to deploy Logstash on Kubernetes, you muste have an instance/cluster up and running and configure the Ansible host file
+*   If yu want to deploy Logstash on Kubernetes, you must have an instance/cluster up and running and configure the Ansible host file
 
 ### Usage
 

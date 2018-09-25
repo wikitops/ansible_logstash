@@ -22,7 +22,6 @@
     - opt/logstash/config/logstash.yml
     - opt/logstash/config/jvm.options
     - opt/logstash/config/startup.options
-  notify: Restart logstash
 
 - name: LOGSTASH ON DOCKER | Create the network
   docker_network:
