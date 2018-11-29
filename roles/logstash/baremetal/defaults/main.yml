@@ -13,7 +13,7 @@ logstash_jvm_xmx: 1g
 
 # Version
 logstash_major_version: "6.x"
-logstash_version: "6.4.1"
+logstash_version: "6.5.1"
 
 # Apt repository
 logstash_apt_key: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"

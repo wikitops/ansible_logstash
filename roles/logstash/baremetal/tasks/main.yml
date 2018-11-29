@@ -2,16 +2,15 @@
 
 - name: LOGSTASH | Manage Debian environment
   import_tasks: debian.yml
-  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  when: ansible_os_family == 'Debian'
 
 - name: LOGSTASH | Manage Redhat environment
   import_tasks: redhat.yml
-  when: ansible_os_family == 'RedHat' or ansible_os_family == 'CentOS'
+  when: ansible_os_family == 'RedHat'
 
-- name: LOGSTASH | Install required packages
+- name: LOGSTASH | Installation
   package:
      name: "logstash"
-     update_cache: yes
      state: present
   notify: Restart logstash
 

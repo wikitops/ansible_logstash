@@ -1,4 +1,8 @@
 ---
 
 dependencies:
+
   - role: java
+    vars:
+      java_package:
+        - openjdk-8-jdk

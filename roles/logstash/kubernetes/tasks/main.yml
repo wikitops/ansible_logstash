@@ -11,23 +11,19 @@
 - name: LOGSTASH ON KUBERNETES | Manage Config Maps to configure pipelines
   k8s:
     state: present
-    src: "{{ lookup('template', 'configmap-pipeline.yaml') | from_yaml }}"
-  with_items: "{{ logstash_configmap_pipeline }}"
+    definition: "{{ lookup('template', 'configmap-pipeline.yaml') | from_yaml }}"
 
 - name: LOGSTASH ON KUBERNETES | Manage Config Maps to configure Logstash
   k8s:
     state: present
-    src: "{{ lookup('template', 'configmap-config.yaml') | from_yaml }}"
-  with_items: "{{ logstash_configmap_config }}"
+    definition: "{{ lookup('template', 'configmap-config.yaml') | from_yaml }}"
 
 - name: LOGSTASH ON KUBERNETES | Manage Deployments
   k8s:
     state: present
-    src: "{{ lookup('template', 'deployment.yaml') | from_yaml }}"
-  with_items: "{{ logstash_deployment }}"
+    definition: "{{ lookup('template', 'deployment.yaml') | from_yaml }}"
 
 - name: LOGSTASH ON KUBERNETES | Manage Services
   k8s:
     state: present
-    src: "{{ lookup('template', 'service.yaml') | from_yaml }}"
-  with_items: "{{ logstash_deployment }}"
+    definition: "{{ lookup('template', 'service.yaml') | from_yaml }}"

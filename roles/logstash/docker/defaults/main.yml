@@ -12,7 +12,7 @@ logstash_jvm_xmx: 1g
 ###
 
 # Version
-logstash_version: 6.4.1
+logstash_version: 6.5.1
 
 # Users
 logstash_user: logstash

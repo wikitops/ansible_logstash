@@ -1,23 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ item.name }}"
-  namespace: "{{ item.namespace }}"
+  name: "{{ logstash_deployment.name }}"
+  namespace: "{{ logstash_deployment.namespace }}"
 spec:
-  replicas: "{{ item.replicas }}"
+  replicas: {{ logstash_deployment.replicas }}
   selector:
     matchLabels:
-      app: "{{ item.name }}"
+      app: "{{ logstash_deployment.name }}"
   template:
     metadata:
       labels:
-        app: "{{ item.name }}"
+        app: "{{ logstash_deployment.name }}"
     spec:
       containers:
-      - image: "{{ item.image }}"
-        name: "{{ item.name }}"
-        ports: "{{ item.ports }}"
-        resources: "{{ item.resources }}"
+      - image: "{{ logstash_deployment.image }}"
+        name: "{{ logstash_deployment.name }}"
+        ports:
+{% for port in logstash_deployment.ports %}
+          - name: {{ port.name }}
+            containerPort: {{ port.containerPort }}
+{% endfor %}
         volumeMounts:
         - name: config
           mountPath: /usr/share/logstash/config/logstash.yml
@@ -30,13 +33,13 @@ spec:
       volumes:
       - name: pipeline
         configMap:
-          name: "{{ item.name }}-pipeline"
-          items:
+          name: "{{ logstash_deployment.name }}-pipeline"
+          logstash_deployments:
           - key: pipeline.conf
             path: pipeline.conf
       - name: config
         configMap:
-          name: "{{ item.name }}-config"
-          items:
+          name: "{{ logstash_deployment.name }}-config"
+          logstash_deployments:
           - key: logstash.yml
             path: logstash.yml
