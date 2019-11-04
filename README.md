@@ -27,14 +27,12 @@ Be aware that you need to be in the Vagrant directory to be able to run the comm
 
 #### Baremetal Deployment
 
-To deploy the Logstash client on baremetal, you have to configure the variable *logstash_on_baremetal* to *true* in the file logstash.yml before running the playbook :
+To deploy the Logstash client on baremetal, you have to configure the variable *logstash_install_type* to *baremetal* in the file logstash.yml before running the playbook :
 
 ```yaml
 [...]
 vars:
-  logstash_on_baremetal: true
-  logstash_on_docker: false
-  logstash_on_kubernetes: false
+  logstash_install_type: baremetal
 [...]
 ```
 
@@ -48,14 +46,12 @@ If everything run has expected, you should deploy pipeline files in /opt/logstas
 
 #### Docker Deployment
 
-To deploy the Logstash client on Docker, you have to configure the variable *logstash_on_docker* to *true* in the file logstash.yml before running the playbook :
+To deploy the Logstash client on Docker, you have to configure the variable *logstash_install_type* to *docker* in the file logstash.yml before running the playbook :
 
 ```yaml
 [...]
 vars:
-  logstash_on_baremetal: false
-  logstash_on_docker: true
-  logstash_on_kubernetes: false
+  logstash_install_type: docker
 [...]
 ```
 
@@ -69,14 +65,12 @@ If everything run has expected, you should have a Docker container named logstas
 
 #### Kubernetes Deployment
 
-To deploy the Logstash client on Kubernetes, you have to configure the variable *logstash_on_kubernetes* to *true* in the file logstash.yml before running the playbook :
+To deploy the Logstash client on Kubernetes, you have to configure the variable *logstash_install_type* to *Kubernetes* in the file logstash.yml before running the playbook :
 
 ```yaml
 [...]
 vars:
-  logstash_on_baremetal: false
-  logstash_on_docker: false
-  logstash_on_kubernetes: true
+  logstash_install_type: Kubernetes
 [...]
 ```
 

@@ -3,7 +3,7 @@
   name: java
 
 - src: git+https://github.com/wikitops/ansible_docker
-  version: "1.6"
+  version: "1.7"
   name: docker
 
 - src: git+https://github.com/wikitops/ansible_epel

@@ -4,8 +4,6 @@
   remote_user: vagrant
   become: yes
   vars:
-    logstash_on_baremetal: true
-    logstash_on_docker: false
-    logstash_on_kubernetes: false
+    logstash_install_type: baremetal # baremetal / docker / kubernetes
   roles:
     - logstash
